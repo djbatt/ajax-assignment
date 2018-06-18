@@ -2,10 +2,11 @@ $(document).ready(function(){
     var topics = ["birch", "oak", "sequoia", "sycamore", "spruce", "willow", "pine", "fig", "palm", "maple"];
 
     function imgDisplay() {
-        var currentTarget;
+        var queryUrl = "http://api.giphy.com/v1/gifs/search?q=" + "example" + "&api_key=BgLtfJu3WbjPzngLYydCY8wjCVQ8BLUx&rating=pg-13&limit=10";
+
         $.ajax({
             url: queryUrl,
-            method: GET
+            method: "GET"
         })
         .done(function(response){
             var ourData = response.data;
@@ -30,36 +31,28 @@ $(document).ready(function(){
 
                 $("#imgColumn").prepend(displayDiv);
             }
-        })
-    }
-
-    var queryUrl = "http://api.giphy.com/v1/gifs/search?q=" + currentTarget + "&api_key=BgLtfJu3WbjPzngLYydCY8wjCVQ8BLUx&rating=pg-13&limit=10";
-
-    function userInput() {
-        $(".btn").click(function(event) {
-            var textSelection = event.target.textContent
-
-            if (event.target.class = "imgOption") {
-                currentTarget = textSelection;
-                console.log(currentTarget);
-                console.log(queryUrl);
-            }
-            
-            if (event.target.id === "inputBtn") {
-            };
-            imgDisplay();
         });
     }
 
-    function pageLoad() {
-        for (var i = 0; i < topics.length; i++) {
-            $("#topicColumn").append(" <btn class='btn btn-primary imgOption'>" + topics[i] + "</btn> ")
+    $("#imgInput").click(function(event){
+        event.preventDefault();
+        var newTopic = $("#imgInput").val().trim();
+        topics.push(newTopic);
+        buttonDisplay();
+    });
+
+    function buttonDisplay() {
+        $("#topicColumn").empty();
+        for (var i = 0; i < topics.length; i ++) {
+            var topicButton = $("<btn class='btn btn-danger'>")
+            topicButton.addClass("imgTopic");
+            topicButton.attr("data-search", topics[i]);
+            topicButton.text(topics[i]);
+            $("#topicColumn").append(topicButton);
         }
-        userInput();
     }
-    
-    pageLoad();
-    
+
+    buttonDisplay();
     // loop through the topics and generate a <btn> for each topic
     // when the user clicks the topic, grab the queryUrl and run a search based on the currentTopic (the currentTopic is the one the user clicked)
     // append a new button if the user pushes a new topic using the text-input
