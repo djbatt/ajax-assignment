@@ -1,24 +1,36 @@
 $(document).ready(function(){
-    var ajax = {
-        queryUrl: "http://api.giphy.com/v1/gifs/search?q=" + "words" + "&api_key=BgLtfJu3WbjPzngLYydCY8wjCVQ8BLUx&rating=pg-13",
-        topics: ["birch", "oak", "sequoia", "sycamore", "spruce", "willow", "pine", "fig", "palm", "maple"],
+    
+    var queryUrl = "http://api.giphy.com/v1/gifs/search?q=" + currentTarget + "&api_key=BgLtfJu3WbjPzngLYydCY8wjCVQ8BLUx&rating=pg-13";
+    var topics = ["birch", "oak", "sequoia", "sycamore", "spruce", "willow", "pine", "fig", "palm", "maple"],
 
-        pageLoad: function() {
-            ajax.userInput();
-            for (var i = 0; i < ajax.topics.length; i++) { // generate the first buttons
-                $("#topicColumn").append(" <btn class='btn btn-primary'> " + ajax.topics[i] + " </btn> ")
-            }
-        },
+    function userInput() {
+        $(".btn").click(function(event) {
 
-        userInput: function() {
-            $(".btn").click(function(event) {
-                var user = event;
-                console.log("test");
-            });
-        },
+            var currentTarget = event.target.textContent
+            
+            if (event.target.id === "inputBtn") {
+            };
+        });
     }
 
-    ajax.pageLoad();
+    function imgDisplay() {
+        $.ajax({
+            url: ajax.queryUrl,
+            method: GET
+        })
+        .done(function(response){
+
+        })
+    }
+
+    function pageLoad() {
+        for (var i = 0; i < ajax.topics.length; i++) {
+            $("#topicColumn").append(" <btn class='btn btn-primary'>" + ajax.topics[i] + "</btn> ")
+        }
+        ajax.userInput();
+    }
+    
+    pageLoad();
     
     // loop through the topics and generate a <btn> for each topic
     // when the user clicks the topic, grab the queryUrl and run a search based on the currentTopic (the currentTopic is the one the user clicked)
