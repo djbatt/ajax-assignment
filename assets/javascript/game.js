@@ -11,15 +11,24 @@ $(document).ready(function(){
             var ourData = response.data;
 
             for (var i = 0; i < ourData.length; i++) {
+                var displayDiv = $("<div class='col-md-2'>");
                 var img = $("<img>");
+                var rating = ourData[i].rating;
+                var ratingDisplay = $("<span>").text("Rating: " + rating);
                 var animated = results[i].images.fixed_height.url;
                 var static = results[i].images.fixed_height.url;
-
+                
+                // add all these attributes, then append the image and respective rating to the displayDiv, finally insert the display div to the top of our igmColumn
                 img.attr("src", static);
                 img.addClass("giphyResponse");
                 img.attr("data-state", "still");
                 img.attr("data-still", static);
                 img.attr("data-animate", animated);
+
+                displayDiv.append(ratingDisplay);
+                displayDiv.append(img);
+
+                $("#imgColumn").prepend(displayDiv);
             }
         })
     }
