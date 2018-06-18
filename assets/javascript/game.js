@@ -1,33 +1,52 @@
 $(document).ready(function(){
-    
-    var queryUrl = "http://api.giphy.com/v1/gifs/search?q=" + currentTarget + "&api_key=BgLtfJu3WbjPzngLYydCY8wjCVQ8BLUx&rating=pg-13";
-    var topics = ["birch", "oak", "sequoia", "sycamore", "spruce", "willow", "pine", "fig", "palm", "maple"],
-
-    function userInput() {
-        $(".btn").click(function(event) {
-
-            var currentTarget = event.target.textContent
-            
-            if (event.target.id === "inputBtn") {
-            };
-        });
-    }
+    var topics = ["birch", "oak", "sequoia", "sycamore", "spruce", "willow", "pine", "fig", "palm", "maple"];
 
     function imgDisplay() {
+        var currentTarget;
         $.ajax({
-            url: ajax.queryUrl,
+            url: queryUrl,
             method: GET
         })
         .done(function(response){
+            var ourData = response.data;
 
+            for (var i = 0; i < ourData.length; i++) {
+                var img = $("<img>");
+                var animated = results[i].images.fixed_height.url;
+                var static = results[i].images.fixed_height.url;
+
+                img.attr("src", static);
+                img.addClass("giphyResponse");
+                img.attr("data-state", "still");
+                img.attr("data-still", static);
+                img.attr("data-animate", animated);
+            }
         })
     }
 
+    var queryUrl = "http://api.giphy.com/v1/gifs/search?q=" + currentTarget + "&api_key=BgLtfJu3WbjPzngLYydCY8wjCVQ8BLUx&rating=pg-13&limit=10";
+
+    function userInput() {
+        $(".btn").click(function(event) {
+            var textSelection = event.target.textContent
+
+            if (event.target.class = "imgOption") {
+                currentTarget = textSelection;
+                console.log(currentTarget);
+                console.log(queryUrl);
+            }
+            
+            if (event.target.id === "inputBtn") {
+            };
+            imgDisplay();
+        });
+    }
+
     function pageLoad() {
-        for (var i = 0; i < ajax.topics.length; i++) {
-            $("#topicColumn").append(" <btn class='btn btn-primary'>" + ajax.topics[i] + "</btn> ")
+        for (var i = 0; i < topics.length; i++) {
+            $("#topicColumn").append(" <btn class='btn btn-primary imgOption'>" + topics[i] + "</btn> ")
         }
-        ajax.userInput();
+        userInput();
     }
     
     pageLoad();
